@@ -26,21 +26,21 @@ export class TesteComponent {
     return Object.keys(this.testeForm.controls);
   }
 
-  createFormControls(instance: any): { [key: string]: FormControl } {
-    const controls: { [key: string]: FormControl } = {};
-    const fieldTypes = (instance.constructor as any).fieldTypes;
-
-    for (const key in fieldTypes) {
-      controls[key] = new FormControl(instance[key]);
-    }
-
-    return controls;
-  }
-
   getControlType(controlName: string): string {
     const usuario: Usuario = new Usuario();
     const fieldTypes = (usuario.constructor as any).fieldTypes;
     return fieldTypes[controlName] || 'text';
+  }
+
+  getErrorMessage(controlName: string): string {
+    const control = this.testeForm.get(controlName);
+    if (control && control.invalid) {
+      const errors = control.errors;
+      if (errors) {
+        return 'Não atende todos validators.';
+      }
+    }
+    return '';
   }
 
 }
